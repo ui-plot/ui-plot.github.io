@@ -1,0 +1,96 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <!--<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>input your data</title>
+
+</head>
+
+<body text="#000066" bgcolor="#99CCCC" link="#0000CC" vlink="#008000" alink="#0000CC">
+  <!--数据输入-->
+  请按如下格式填入数据:<br>
+  0.100, 0.12 <br>
+  0.207, 0.25 <br>
+  <textarea style="height:200px;width:200px;" id="ui_text"></textarea> <br>
+
+  <button id="btn">折线图</button> &nbsp <button id="btn_smooth">光滑曲线</button> &nbsp <button id="btn_exp">指数拟合</button>
+  <br>
+  <button id="btn_clear">清除曲线</button>
+  <br>
+  <br>
+  <canvas id="myCanvas" width="600" height="600">抱歉, 你的浏览器版本不支持canvas</canvas>
+
+</body>
+
+<script src="UI_plot.js"> </script>
+<script>
+  // 定义变量指向布局中的按钮，文本框和画布对象
+  var btn = document.getElementById('btn');
+  var btn_smooth = document.getElementById('btn_smooth');
+  var btn_exp = document.getElementById('btn_exp');
+  var btn_clear = document.getElementById('btn_clear');
+  var drawing = document.getElementById("myCanvas");
+  var context = drawing.getContext("2d");
+
+  // 获取画布的尺寸
+  var width = drawing.width;
+  var height = drawing.height;
+
+  // 画布页边距
+  var bound = 6; // 设为宽度和高度的1/6。
+  var x_bound = width / bound;
+  var y_bound = height / bound;
+
+  var x_total = width * (bound - 2) / bound;
+  var y_total = height * (bound - 2) / bound;
+
+  // 确定坐标原点相对坐标
+  var x0 = x_bound;
+  var y0 = height - y_bound;
+ 
+  // xlabel和ylabel的位置调节.
+  var xlabel_right = 0; // 左右调节
+  var xlabel_down = 14; // 上下调节
+  var ylabel_down = 5; // 仅支持上下调节，左右跟x轴上的原点对齐.  
+  var x_ntick = 5;   // 坐标轴上label的数目
+  var y_ntick = 5;
+  var x_dec = 3; // 小数点位数.
+  var y_dec = 2;
+  var x_bar = 5; // 坐标轴tick bar的长度
+  var y_bar = 5;
+
+  // 坐标轴的负向长度
+  var axis_xminus=84;
+  var axis_yminus=40;
+
+  var point_size = 10;   // 所画点的大小。
+  var floatn = 3;   // 精度: 小数点后位数
+  var n_insert = 10; // 光滑曲线及拟合时插入的中间值数目.
+
+  
+  btn.addEventListener('click', function () {
+    draw_axis();
+    draw_label();
+    plot_line();
+  });
+  btn_smooth.addEventListener('click', function () {
+    draw_axis();
+    draw_label();
+    plot_smooth();
+  });
+
+  btn_exp.addEventListener('click', function () {
+    draw_axis();
+    draw_label();
+    plot_exp();
+  });
+
+  btn_clear.addEventListener('click', function () {
+    clear();
+  });
+
+</script>
+</html>
